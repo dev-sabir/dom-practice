@@ -28,7 +28,7 @@
         const value = this.previousElementSibling.value;
 
         // Add the new key-value pair to the array
-        kvPairs.unshift({ key, value });
+        kvPairs.push({ key, value });
 
         // Clear the input fields
         this.previousElementSibling.previousElementSibling.value = "";
