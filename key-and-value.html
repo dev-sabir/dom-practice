@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Key-Value Pairs</title>
+  </head>
+  <body>
+    <h1>Key-Value Pairs</h1>
+
+    <div id="kv-container">
+      <div class="kv-row">
+        <input type="text" placeholder="Key" />
+        <input type="text" placeholder="Value" />
+        <button class="add-btn">Add</button>
+      </div>
+    </div>
+
+    <script>
+      // Initialize an empty array to store the key-value pairs
+      let kvPairs = [];
+
+      // Get a reference to the key-value container
+      const kvContainer = document.getElementById("kv-container");
+
+      // Function to add a new key-value pair to the array and container
+      function addPair() {
+        // Get the key and value from the input fields
+        const key = this.previousElementSibling.previousElementSibling.value;
+        const value = this.previousElementSibling.value;
+
+        // Add the new key-value pair to the array
+        kvPairs.unshift({ key, value });
+
+        // Clear the input fields
+        this.previousElementSibling.previousElementSibling.value = "";
+        this.previousElementSibling.value = "";
+
+        // Refresh the container to show the new key-value pair
+        refreshContainer();
+      }
+
+      // Function to delete a key-value pair from the array and container
+      function deletePair(index) {
+        kvPairs.splice(index, 1);
+        refreshContainer();
+      }
+
+      // Function to refresh the container with the current array of key-value pairs
+      function refreshContainer() {
+        // Clear the existing rows
+        kvContainer.innerHTML = "";
+
+        // Add a new row for each key-value pair
+        kvPairs.forEach((pair, index) => {
+          const row = document.createElement("div");
+          row.classList.add("kv-row");
+
+          const keyInput = document.createElement("input");
+          keyInput.type = "text";
+          keyInput.placeholder = "Key";
+          keyInput.value = pair.key;
+          row.appendChild(keyInput);
+
+          const valueInput = document.createElement("input");
+          valueInput.type = "text";
+          valueInput.placeholder = "Value";
+          valueInput.value = pair.value;
+          row.appendChild(valueInput);
+
+          const deleteButton = document.createElement("button");
+          deleteButton.innerText = "Delete";
+          deleteButton.addEventListener("click", () => deletePair(index));
+          row.appendChild(deleteButton);
+
+          kvContainer.appendChild(row);
+        });
+
+        // Add a new row with an "Add" button
+        const newRow = document.createElement("div");
+        newRow.classList.add("kv-row");
+
+        const newKeyInput = document.createElement("input");
+        newKeyInput.type = "text";
+        newKeyInput.placeholder = "Key";
+        newRow.appendChild(newKeyInput);
+
+        const newValueInput = document.createElement("input");
+        newValueInput.type = "text";
+        newValueInput.placeholder = "Value";
+        newRow.appendChild(newValueInput);
+
+        const addButton = document.createElement("button");
+        addButton.innerText = "Add";
+        addButton.classList.add("add-btn");
+        addButton.addEventListener("click", addPair);
+        newRow.appendChild(addButton);
+
+        kvContainer.appendChild(newRow);
+      }
+
+      // Add event listener to the "Add" button in the initial row
+      const addButton = document.querySelector(".add-btn");
+      addButton.addEventListener("click", addPair);
+
+      // Add event listener to the "Delete" buttons
+      kvContainer.addEventListener("click", (event) => {
+        if (event.target.classList.contains("delete-btn")) {
+          const index = event.target.parentNode.dataset.index;
+          deletePair(index);
+        }
+      });
+    </script>
+  </body>
+</html>
